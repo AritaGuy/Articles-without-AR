@@ -1,6 +1,6 @@
 # Please copy/paste all three classes into this file to submit your solution!
 class Author
-    attr_accessor :name :articles, :magazines
+    attr_accessor :name, :articles, :magazines
   
     def initialize(name)
       @name = name
@@ -8,7 +8,7 @@ class Author
     end
     
     def articles
-      Article.all.select |article|
+      Article.all.select do |article|
       article.author == self
       end
     end
@@ -16,7 +16,6 @@ class Author
     def magazines
       articles.each do |article|
        ["#{article.magazine}"].uniq
-       
       end
     end
   
@@ -29,9 +28,9 @@ class Author
         ["#{mag.category}"].uniq
       end
     end
-  end
+end
 
-  class Magazine
+class Magazine
     attr_accessor :name, :category
     @@all = []
   
@@ -54,8 +53,26 @@ class Author
         na.name == name
       end
     end
+  
+      def article_titles
+        Article.all.filter do |article|
+          article.magazine == self
+        end.select {|a| ["#{a.title}"]}
+      end
+    
+      def contributing_authors
+      Article.all.select do |mag|
+      mag.magazine == self
+      end.map do |magazine|
+       magazine.author > 2
+      end.uniq.map do |article|
+        article.articles.count > 2
+      end
+      end
+  
+  end
 
-    class Article
+class Article
         attr_accessor :author, :magazine, :title
         @@all = []
          def initialize(author, magazine, title)
@@ -69,5 +86,5 @@ class Author
             @@all
         end
         
-        end
+end
 

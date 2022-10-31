@@ -33,8 +33,9 @@ class Magazine
     Article.all.select do |mag|
     mag.magazine == self
     end.map do |magazine|
-     if magazine.author > 2
-      magazine.author
+     magazine.author > 2
+    end.uniq.map do |article|
+      article.articles.count > 2
     end
     end
 
